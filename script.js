@@ -493,15 +493,14 @@ function radioButtonActive(radioButtonClassName) {
   }
   var item = null;
 
-  document.addEventListener(
-    "dragstart",
-    function (e) {
-      item = e.target;
-      e.dataTransfer.setData("text", "");
-      playAudio("click.wav");
-    },
-    false
-  );
+  function handleStart(e) {
+    item = e.target;
+    e.dataTransfer.setData("text", "");
+    playAudio("click.wav");
+  }
+  document.addEventListener("dragstart", handleStart, false);
+
+  document.addEventListener("touchstart", handleStart, false);
 
   document.addEventListener(
     "dragover",
@@ -519,12 +518,6 @@ function radioButtonActive(radioButtonClassName) {
         if (item.classList[0] == "vars") {
           rhsVarContainer.classList.add("drag-over");
           lhsVarContainer.classList.add("drag-over");
-        }
-
-        if (item.getAttribute("onBalance") == "true") {
-          document
-            .getElementById("garbageContainer")
-            .classList.add("drag-over");
         }
       }
     },

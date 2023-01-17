@@ -125,10 +125,6 @@ input[type="radio"] {
     width: 30px;
     padding: 1px;
   }
-  /* .inner-console {
-    height: 85vh;
-  } */
-
   .innermost-console {
     width: 90%;
     height: 50vh;

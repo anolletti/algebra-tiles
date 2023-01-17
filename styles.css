@@ -108,6 +108,9 @@ h5 {
   text-align: center;
 }
 
+#tileContainer {
+  margin: auto;
+}
 input[type="radio"] {
   display: none;
 }
@@ -115,26 +118,33 @@ input[type="radio"] {
 @media only screen and (max-width: 900px) {
   .bevelContainer {
     width: 80%;
-    padding: 3%;
+    padding: 2%;
   }
   .icon {
     width: 30px;
     padding: 1px;
   }
-  .inner-console {
-    width: 95%;
-  }
+  /* .inner-console {
+    height: 85vh;
+  } */
+
   .innermost-console {
-    width: 100%;
-    height: 50%;
+    width: 90%;
+    height: 50vh;
   }
   .scaleContainer {
     width: 90%;
+  }
+  .tiles {
+    height: 20px;
+  }
+  .unit {
+    width: 20px;
   }
   .vars {
     width: 90px;
   }
   #tileContainer {
-    width: 50%;
+    width: auto;
   }
 }

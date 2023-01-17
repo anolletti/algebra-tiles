@@ -493,14 +493,15 @@ function radioButtonActive(radioButtonClassName) {
   }
   var item = null;
 
-  function handleStart(e) {
-    item = e.target;
-    e.dataTransfer.setData("text", "");
-    playAudio("click.wav");
-  }
-  document.addEventListener("dragstart", handleStart, false);
-
-  document.addEventListener("touchstart", handleStart, false);
+  document.addEventListener(
+    "dragstart",
+    function (e) {
+      item = e.target;
+      e.dataTransfer.setData("text", "");
+      playAudio("click.wav");
+    },
+    false
+  );
 
   document.addEventListener(
     "dragover",

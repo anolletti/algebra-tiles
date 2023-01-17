@@ -146,6 +146,6 @@ input[type="radio"] {
     width: 90px;
   }
   #tileContainer {
-    width: 100vw;
+    width: 100%;
   }
 }

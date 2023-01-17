@@ -490,6 +490,7 @@ function radioButtonActive(radioButtonClassName) {
     i++
   ) {
     items[i].setAttribute("draggable", "true");
+    // items[i].classList.add("draggable");
   }
   var item = null;
 

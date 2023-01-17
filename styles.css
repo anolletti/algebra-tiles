@@ -2,6 +2,7 @@ body {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  touch-action: none;
   height: 100vh;
   background-image: linear-gradient(to top left, #753682 0%, #bf2e34 100%);
   margin-right: 8%;

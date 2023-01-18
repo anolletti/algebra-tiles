@@ -748,15 +748,15 @@ function verifySolution() {
   // Algebraic Solution
   if (rhsVar != 0) {
     calculationsField.innerHTML = `
-  $$${lhsUnit} + ${lhsVar}x = ${rhsVar}x + ${rhsUnit}$$ <br>
-  $$${lhsUnit} + ${lhsVar}(${variable}) = ${rhsVar}(${variable}) + ${rhsUnit}$$ <br>
-  $$${lhsUnit} + ${lhsVar * variable} = ${rhsVar * variable} + ${rhsUnit}$$ <br>
-  $$${lhsUnit + lhsVar * variable} = ${lhsUnit + lhsVar * variable}$$`;
+  ${lhsUnit} + ${lhsVar}x = ${rhsVar}x + ${rhsUnit} <br>
+  ${lhsUnit} + ${lhsVar}(${variable}) = ${rhsVar}(${variable}) + ${rhsUnit} <br>
+  ${lhsUnit} + ${lhsVar * variable} = ${rhsVar * variable} + ${rhsUnit} <br>
+  ${lhsUnit + lhsVar * variable} = ${lhsUnit + lhsVar * variable}`;
   } else {
     calculationsField.innerHTML = `
-    $$${lhsUnit} + ${lhsVar}x =  ${rhsUnit}$$ <br>
-    $$${lhsUnit} + ${lhsVar}(${variable}) =  ${rhsUnit}$$ <br>
-    $$${lhsUnit} + ${lhsVar * variable} = ${rhsUnit}$$ <br>
-    $$${lhsUnit + lhsVar * variable} = ${lhsUnit + lhsVar * variable}$$`;
+    ${lhsUnit} + ${lhsVar}x =  ${rhsUnit} <br>
+    ${lhsUnit} + ${lhsVar}(${variable}) =  ${rhsUnit} <br>
+    ${lhsUnit} + ${lhsVar * variable} = ${rhsUnit} <br>
+    ${lhsUnit + lhsVar * variable} = ${lhsUnit + lhsVar * variable}`;
   }
 }

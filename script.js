@@ -353,7 +353,7 @@ function setTiles() {
     rhsVarRandom = Math.floor(Math.random() * 8);
   } else if (difficulty == 3) {
     lhsUnitRandom = Math.floor(Math.random() * 8) - 4;
-    lhsVarRandom = Math.floor(Math.random() * 8) - 4;
+    lhsVarRandom = Math.floor(Math.random() * 8);
     rhsUnitRandom = Math.floor(Math.random() * 8) - 4;
     rhsVarRandom = 0;
   } else {

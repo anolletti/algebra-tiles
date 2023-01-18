@@ -3,7 +3,7 @@ body {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   touch-action: none;
-  height: 95vh;
+  height: 98vh;
   background-image: linear-gradient(to top left, #753682 0%, #bf2e34 100%);
   margin-right: 8%;
   margin-left: 8%;
@@ -82,7 +82,7 @@ h5 {
 .inner-console {
   background-color: rgba(255, 255, 255, 0.4);
   width: 90vw;
-  height: 96vh;
+  height: 95vh;
   border-radius: 9px;
   color: #333;
   padding: 1%;

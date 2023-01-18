@@ -303,7 +303,7 @@ function balance() {
 
   if (rhs > lhs) {
     var rotatePercent = 1 - lhs / rhs;
-    var Deg = rotatePercent * 4;
+    var Deg = rotatePercent * 6;
     if (Deg > 8) {
       Deg = 8;
     } else if (Deg < 8 && Deg < -8) {
@@ -315,7 +315,7 @@ function balance() {
     equality.innerHTML = "<";
   } else if (lhs > rhs) {
     var rotatePercent = 1 - rhs / lhs;
-    var Deg = rotatePercent * 4;
+    var Deg = rotatePercent * 6;
     if (Deg > 8) {
       Deg = 8;
     } else if (Deg < 8 && Deg < -8) {

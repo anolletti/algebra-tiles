@@ -490,26 +490,17 @@ function radioButtonActive(radioButtonClassName) {
     i++
   ) {
     items[i].setAttribute("draggable", "true");
-    // items[i].classList.add("draggable");
+    items[i].classList.add("draggable");
   }
   var item = null;
+  let position = { x: 0, y: 0 };
 
-  document.addEventListener(
-    "dragstart",
-    function (e) {
-      item = e.target;
-      e.dataTransfer.setData("text", "");
-      playAudio("click.wav");
-    },
-    false
-  );
-
-  document.addEventListener(
-    "dragover",
-    function (e) {
-      if (item) {
-        e.preventDefault();
-
+  interact('*[draggable="true"]').draggable({
+    listeners: {
+      start(event) {
+        parent = event.target.parentElement;
+        let item = event.target;
+        innerValue = item.innerHTML;
         // Add the dotted line to indicate dropzone
 
         if (item.classList[0] == "unit") {
@@ -521,57 +512,23 @@ function radioButtonActive(radioButtonClassName) {
           rhsVarContainer.classList.add("drag-over");
           lhsVarContainer.classList.add("drag-over");
         }
-      }
-    },
-    false
-  );
-
-  //drop event to allow the element to be dropped into valid targets
-  document.addEventListener(
-    "drop",
-    function (e) {
-      if (
-        (e.target.getAttribute("data-draggable") == "target" &&
-          e.target.getAttribute("data-type") == item.classList[0]) ||
-        item.getAttribute("onBalance") == "true" ||
-        e.target.getAttribute("onBalance") == "true" ||
-        e.target.getAttribute("data-draggable") != "target"
-      ) {
-        if (
-          e.target.getAttribute("data-type") == "garbage" ||
-          e.target.getAttribute("data-draggable") != "target"
-        ) {
-          item.remove();
-          playAudio("trash.mp3");
-          // Remove dotted lines on drop boxes
-          let dragOverBoxes = document.querySelectorAll(".drag-over");
-          for (let i = 0; i < dragOverBoxes.length; i++) {
-            dragOverBoxes[i].classList.remove("drag-over");
+        playAudio("click.wav");
+      },
+      move(event) {
+        position.x += event.dx;
+        position.y += event.dy;
+        event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+      },
+      end(event) {
+        let eventTarget = event.target;
+        function remove(eventTarget) {
+          if (eventTarget.style.transform != "") {
+            position = { x: 0, y: 0 };
+            eventTarget.remove();
+            playAudio("trash.mp3");
           }
-          setTimeout(checkMatch, 800);
-          setTimeout(checkSolvedEquation, 800);
         }
-        if (
-          e.target.getAttribute("data-draggable") == "target" &&
-          e.target.getAttribute("data-type") == item.classList[0]
-        ) {
-          e.target.insertBefore(item, e.target.firstChild);
-
-          playAudio("drop.wav");
-        } else if (e.target.getAttribute("onBalance") == "true") {
-          e.target.parentElement.insertBefore(
-            item,
-            e.target.parentElement.firstChild
-          );
-
-          playAudio("drop.wav");
-        }
-
-        item.innerHTML = "";
-        item.setAttribute("onBalance", "true");
-        e.preventDefault();
-        balance();
-        equationText();
+        setTimeout(remove(eventTarget), 100);
 
         if (posTileContainerUnit.children.length == 0) {
           createTile("unit", "pos", posTileContainerUnit, true, false);
@@ -585,27 +542,150 @@ function radioButtonActive(radioButtonClassName) {
         if (negTileContainerVar.children.length == 0) {
           createTile("vars", "neg", negTileContainerVar, true, false);
         }
+        let dragOverBoxes = document.querySelectorAll(".drag-over");
+        for (let i = 0; i < dragOverBoxes.length; i++) {
+          dragOverBoxes[i].classList.remove("drag-over");
+        }
+
+        balance();
+        equationText();
+        setTimeout(checkMatch, 800);
+        setTimeout(checkSolvedEquation, 800);
+      },
+    },
+  });
+
+  interact(".boxes").dropzone({
+    accept: "div",
+    overlap: 0.75,
+
+    ondrop: function (event) {
+      console.log(event.relatedTarget.classList[0]);
+      if (
+        event.relatedTarget.classList[0] ==
+        event.target.getAttribute("data-type")
+      ) {
+        event.relatedTarget.style = "";
+        event.relatedTarget.innerHTML = "";
+        event.target.insertBefore(event.relatedTarget, event.target.firstChild);
+        position = { x: 0, y: 0 };
+        balance();
+        equationText();
+        playAudio("drop.wav");
       }
     },
-    false
-  );
+  });
 
-  document.addEventListener(
-    "dragend",
-    function (e) {
-      item = null;
+  //   document.addEventListener(
+  //     "dragstart",
+  //     function (e) {
+  //       item = e.target;
+  //       e.dataTransfer.setData("text", "");
+  //       playAudio("click.wav");
+  //     },
+  //     false
+  //   );
 
-      // Remove dotted lines on drop boxes
-      let dragOverBoxes = document.querySelectorAll(".drag-over");
-      for (let i = 0; i < dragOverBoxes.length; i++) {
-        dragOverBoxes[i].classList.remove("drag-over");
-      }
+  //   document.addEventListener(
+  //     "dragover",
+  //     function (e) {
+  //       if (item) {
+  //         e.preventDefault();
 
-      setTimeout(checkMatch, 800);
-      setTimeout(checkSolvedEquation, 800);
-    },
-    false
-  );
+  //         // Add the dotted line to indicate dropzone
+
+  //         if (item.classList[0] == "unit") {
+  //           rhsUnitContainer.classList.add("drag-over");
+  //           lhsUnitContainer.classList.add("drag-over");
+  //         }
+
+  //         if (item.classList[0] == "vars") {
+  //           rhsVarContainer.classList.add("drag-over");
+  //           lhsVarContainer.classList.add("drag-over");
+  //         }
+  //       }
+  //     },
+  //     false
+  //   );
+
+  //   //drop event to allow the element to be dropped into valid targets
+  //   document.addEventListener(
+  //     "drop",
+  //     function (e) {
+  //       if (
+  //         (e.target.getAttribute("data-draggable") == "target" &&
+  //           e.target.getAttribute("data-type") == item.classList[0]) ||
+  //         item.getAttribute("onBalance") == "true" ||
+  //         e.target.getAttribute("onBalance") == "true" ||
+  //         e.target.getAttribute("data-draggable") != "target"
+  //       ) {
+  //         if (
+  //           e.target.getAttribute("data-type") == "garbage" ||
+  //           e.target.getAttribute("data-draggable") != "target"
+  //         ) {
+  //           item.remove();
+  //           playAudio("trash.mp3");
+  //           // Remove dotted lines on drop boxes
+  //           let dragOverBoxes = document.querySelectorAll(".drag-over");
+  //           for (let i = 0; i < dragOverBoxes.length; i++) {
+  //             dragOverBoxes[i].classList.remove("drag-over");
+  //           }
+  //           setTimeout(checkMatch, 800);
+  //           setTimeout(checkSolvedEquation, 800);
+  //         }
+  //         if (
+  //           e.target.getAttribute("data-draggable") == "target" &&
+  //           e.target.getAttribute("data-type") == item.classList[0]
+  //         ) {
+  //           e.target.insertBefore(item, e.target.firstChild);
+
+  //           playAudio("drop.wav");
+  //         } else if (e.target.getAttribute("onBalance") == "true") {
+  //           e.target.parentElement.insertBefore(
+  //             item,
+  //             e.target.parentElement.firstChild
+  //           );
+
+  //           playAudio("drop.wav");
+  //         }
+
+  //         item.innerHTML = "";
+  //         item.setAttribute("onBalance", "true");
+  //         e.preventDefault();
+  //         balance();
+  //         equationText();
+
+  //         if (posTileContainerUnit.children.length == 0) {
+  //           createTile("unit", "pos", posTileContainerUnit, true, false);
+  //         }
+  //         if (posTileContainerVar.children.length == 0) {
+  //           createTile("vars", "pos", posTileContainerVar, true, false);
+  //         }
+  //         if (negTileContainerUnit.children.length == 0) {
+  //           createTile("unit", "neg", negTileContainerUnit, true, false);
+  //         }
+  //         if (negTileContainerVar.children.length == 0) {
+  //           createTile("vars", "neg", negTileContainerVar, true, false);
+  //         }
+  //       }
+  //     },
+  //     false
+  //   );
+
+  //   document.addEventListener(
+  //     "dragend",
+  //     function (e) {
+  //       item = null;
+
+  //       // Remove dotted lines on drop boxes
+  //       let dragOverBoxes = document.querySelectorAll(".drag-over");
+  //       for (let i = 0; i < dragOverBoxes.length; i++) {
+  //         dragOverBoxes[i].classList.remove("drag-over");
+  //       }
+  //     },
+  //     false
+  //   );
+  //
 })();
 
 // You Win Modal Set-Up

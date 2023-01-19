@@ -705,7 +705,7 @@ function verifySolution() {
   } else {
     varSign = "neg";
   }
-  for (let i = 0; i < variable; i++) {
+  for (let i = 0; i < Math.abs(variable); i++) {
     createTile("unit", varSign, rhsAnswerContainer, true, false);
   }
 
@@ -714,16 +714,18 @@ function verifySolution() {
   } else {
     lhsUnitSign = "neg";
   }
-  for (let i = 0; i < lhsUnit; i++) {
+  for (let i = 0; i < Math.abs(lhsUnit); i++) {
     createTile("unit", lhsUnitSign, lhsUnitContainerAnswer, true, false);
   }
+  console.log(lhsUnit);
+  console.log(lhsUnitSign);
 
   if (lhsVar > 0) {
     lhsVarSign = "pos";
   } else {
     lhsVarSign = "neg";
   }
-  for (let i = 0; i < lhsVar; i++) {
+  for (let i = 0; i < Math.abs(lhsVar); i++) {
     createTile("vars", lhsVarSign, lhsVarContainerAnswer, true, false);
     lhsVarContainerAnswer.children[i].innerHTML = `x = ${variable}`;
   }
@@ -733,7 +735,7 @@ function verifySolution() {
   } else {
     rhsUnitSign = "neg";
   }
-  for (let i = 0; i < rhsUnit; i++) {
+  for (let i = 0; i < Math.abs(rhsUnit); i++) {
     createTile("unit", rhsUnitSign, rhsUnitContainerAnswer, true, false);
   }
 
@@ -742,7 +744,7 @@ function verifySolution() {
   } else {
     rhsVarSign = "neg";
   }
-  for (let i = 0; i < rhsVar; i++) {
+  for (let i = 0; i < Math.abs(rhsVar); i++) {
     createTile("vars", rhsVarSign, rhsVarContainerAnswer, true, false);
   }
   // Algebraic Solution

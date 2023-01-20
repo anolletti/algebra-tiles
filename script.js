@@ -603,7 +603,11 @@ function verifySolution() {
   lhsVar > 0 ? (lhsVarSign = "pos") : (lhsVarSign = "neg");
   for (let i = 0; i < Math.abs(lhsVar); i++) {
     createTile("vars", lhsVarSign, lhsVarContainerAnswer, true, false);
-    lhsVarContainerAnswer.children[i].innerHTML = `x = ${variable}`;
+    if (lhsVarSign == "neg" && variable < 0) {
+      lhsVarContainerAnswer.children[i].innerHTML = `x = -(${variable})`;
+    } else {
+      lhsVarContainerAnswer.children[i].innerHTML = `x = ${variable}`;
+    }
   }
 
   rhsUnit > 0 ? (rhsUnitSign = "pos") : (rhsUnitSign = "neg");
@@ -614,6 +618,11 @@ function verifySolution() {
   rhsVar > 0 ? (rhsVarSign = "pos") : (rhsVarSign = "neg");
   for (let i = 0; i < Math.abs(rhsVar); i++) {
     createTile("vars", rhsVarSign, rhsVarContainerAnswer, true, false);
+    if (rhsVarSign == "neg" && variable < 0) {
+      rhsVarContainerAnswer.children[i].innerHTML = `x = -(${variable})`;
+    } else {
+      rhsVarContainerAnswer.children[i].innerHTML = `x = ${variable}`;
+    }
   }
   // Algebraic Solution
   if (rhsVar != 0) {

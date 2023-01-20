@@ -121,12 +121,13 @@ function equationToMatch() {
   lhsVar = 4;
   variable = 0.5;
   while (lhsUnit + lhsVar * variable != rhsUnit + rhsVar * variable) {
-    if (difficulty == 1 || difficulty == 2 || difficulty == 3) {
-      variable = Math.floor(Math.random() * 8) + 1;
-    } else if (difficulty == 4) {
-      variable = Math.floor(Math.random() * 10) - 5;
+    while (variable != 0) {
+      if (difficulty == 1 || difficulty == 2 || difficulty == 3) {
+        variable = Math.floor(1 + Math.random() * 8);
+      } else if (difficulty == 4) {
+        variable = Math.floor(-5 + Math.random() * 8);
+      }
     }
-
     if (difficulty == 1) {
       rhsUnit = Math.floor(Math.random() * 9) + 1;
       rhsVar = 0;

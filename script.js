@@ -120,7 +120,7 @@ function equationToMatch() {
   lhsUnit = 3;
   lhsVar = 4;
   variable = 0;
-  while (lhsUnit + lhsVar * variable != rhsUnit + rhsVar * variable) {
+  do {
     if (difficulty == 1 || difficulty == 2 || difficulty == 3) {
       variable = Math.floor(1 + Math.random() * 8);
     } else if (difficulty == 4) {
@@ -152,7 +152,7 @@ function equationToMatch() {
         lhsVar = Math.floor(Math.random() * 9) - 5;
       } while (lhsVar == 0);
     }
-  }
+  } while (lhsUnit + lhsVar * variable != rhsUnit + rhsVar * variable);
   rhsVar != 0
     ? (changeTextByName("rhsVar", `${rhsVar}x`),
       changeTextByName("rhsSign", `+`))

@@ -119,35 +119,38 @@ function equationToMatch() {
   rhsVar = 2;
   lhsUnit = 3;
   lhsVar = 4;
-  variable = 0.5;
+  variable = 0;
   while (lhsUnit + lhsVar * variable != rhsUnit + rhsVar * variable) {
-    while (variable != 0) {
-      if (difficulty == 1 || difficulty == 2 || difficulty == 3) {
-        variable = Math.floor(1 + Math.random() * 8);
-      } else if (difficulty == 4) {
-        variable = Math.floor(-5 + Math.random() * 8);
-      }
+    if (difficulty == 1 || difficulty == 2 || difficulty == 3) {
+      variable = Math.floor(1 + Math.random() * 8);
+    } else if (difficulty == 4) {
+      variable = Math.floor(-5 + Math.random() * 8);
     }
+
     if (difficulty == 1) {
       rhsUnit = Math.floor(Math.random() * 9) + 1;
       rhsVar = 0;
       lhsUnit = Math.floor(Math.random() * 9) + 1;
-      lhsVar = Math.floor(Math.random() * 9) + 1;
+      lhsVar = Math.floor(1 + Math.random() * 9);
     } else if (difficulty == 2) {
       rhsUnit = Math.floor(Math.random() * 9) + 1;
-      rhsVar = Math.floor(Math.random() * 9);
+      rhsVar = Math.floor(1 + Math.random() * 9);
       lhsUnit = Math.floor(Math.random() * 9) + 1;
-      lhsVar = Math.floor(Math.random() * 9) + 1;
+      lhsVar = Math.floor(1 + Math.random() * 9);
     } else if (difficulty == 3) {
       rhsUnit = Math.floor(Math.random() * 9) - 5;
       rhsVar = 0;
       lhsUnit = Math.floor(Math.random() * 9) - 5;
-      lhsVar = Math.floor(Math.random() * 9) - 5;
+      do {
+        lhsVar = Math.floor(Math.random() * 9) - 5;
+      } while (lhsVar == 0);
     } else {
       rhsUnit = Math.floor(Math.random() * 9) - 5;
       rhsVar = Math.floor(Math.random() * 9) - 5;
       lhsUnit = Math.floor(Math.random() * 9) - 5;
-      lhsVar = Math.floor(Math.random() * 9) - 5;
+      do {
+        lhsVar = Math.floor(Math.random() * 9) - 5;
+      } while (lhsVar == 0);
     }
   }
   rhsVar != 0

@@ -1,19 +1,23 @@
 // Declaring variables
-let rhs;
-let lhs;
-let variable;
-let lhsUnitRandom;
-let lhsVarRandom;
-let rhsUnitRandom;
-let rhsVarRandom;
-let stepOneComplete;
-let rhsUnit;
-let rhsVarl;
-let lhsUnit;
-let lhsVar;
-let difficulty = 1;
-let language;
-let answerSign, lhsUnitSign, lhsVarSign, rhsUnitSign, rhsVarSign;
+let rhs,
+  lhs,
+  variable,
+  lhsUnitRandom,
+  lhsVarRandom,
+  rhsUnitRandom,
+  rhsVarRandom,
+  stepOneComplete,
+  rhsUnit,
+  rhsVar,
+  lhsUnit,
+  lhsVar,
+  language,
+  answerSign,
+  lhsUnitSign,
+  lhsVarSign,
+  rhsUnitSign,
+  rhsVarSign,
+  difficulty = 1;
 
 const tileContainer = document.getElementById("tileContainer");
 const posTileContainerUnit = document.getElementById("posTileContainerUnit");
@@ -43,7 +47,9 @@ const display = document.getElementsByClassName("display");
 const calculationsField = document.getElementById("calculations");
 
 // Sound effects
-
+/**
+ * @param {string} fileName Name of audio file with extension.
+ */
 function playAudio(fileName) {
   let sound = new Audio(`audio/${fileName}`);
   if (soundIsOn) {
@@ -76,23 +82,18 @@ $(document).on("change", 'input:radio[name="level"]', function (event) {
 $('[lang="fr"]').hide();
 
 $(document).on("change", 'input:radio[name="language"]', function (event) {
-  let restart = document.getElementById("restart");
-  let settingsButton = document.getElementById("settingsButton");
-
   $('[lang="fr"]').toggle();
   $('[lang="en"]').toggle();
-  if (language == "en" || language == null) {
-    restart.setAttribute("data-bs-original-title", "Redémarrer");
-    settingsButton.setAttribute("data-bs-original-title", "Réglages");
-    language = "fr";
-  } else if (language == "fr") {
-    restart.setAttribute("data-bs-original-title", "Restart");
-    settingsButton.setAttribute("data-bs-original-title", "Settings");
-    language = "en";
-  }
+  language == "en" || language == null
+    ? ($("#restart").attr("data-bs-original-title", "Redémarrer"),
+      $("#settingsButton").attr("data-bs-original-title", "Réglages"),
+      (language = "fr"))
+    : ($("#restart").attr("data-bs-original-title", "Restart"),
+      $("#settingsButton").attr("data-bs-original-title", "Settings"),
+      (language = "en"));
 });
 
-// Initialize modal
+// Initialize settings modal
 
 $(document).ready(function () {
   $("#settingsModal").modal("show");
@@ -148,19 +149,21 @@ function equationToMatch() {
       lhsVar = Math.floor(Math.random() * 9) - 5;
     }
   }
-  if (rhsVar != 0) {
-    changeTextByName("rhsVar", `${rhsVar}x`);
-    changeTextByName("rhsSign", `+`);
-  } else {
-    changeTextByName("rhsSign", "");
-    changeTextByName("rhsVar", "");
-  }
+  rhsVar != 0
+    ? (changeTextByName("rhsVar", `${rhsVar}x`),
+      changeTextByName("rhsSign", `+`))
+    : (changeTextByName("rhsSign", ""), changeTextByName("rhsVar", ""));
+
   changeTextByName("lhsUnit", lhsUnit);
   changeTextByName("lhsVar", `${lhsVar}x`);
   changeTextByName("rhsUnit", rhsUnit);
 }
 
 // Function change inntertext all elements with a given name
+/**
+ * @param {string} elementName Name attribute of HTML element.
+ * @param {string} text Set the inner HTML of element.
+ */
 function changeTextByName(elementName, text) {
   let e = document.getElementsByName(elementName);
   for (let i = 0; i < e.length; i++) {
@@ -175,6 +178,14 @@ var tooltipTriggerList = [].slice.call(
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl);
 });
+
+/**
+ * @param {string} unitOrVars Input "unit" for unit tile or "vars" for variable.
+ * @param {string} posOrNeg Input "pos" for positive tile, or "neg" for negative.
+ * @param {object} parentContainer DOM object of parent container.
+ * @param {boolean} textNoText Enter "true" if +/-1 or +/- x label in tiles, else "false"
+ * @param {boolean} onBalance Enter "true" if tiles are on the balance, else "false".
+ */
 
 // Create tiles
 function createTile(
@@ -192,21 +203,17 @@ function createTile(
     newTile.className = `vars ${posOrNeg} ${classList}`;
     newTile.setAttribute("data-type", "vars");
     if (textNoText) {
-      if (posOrNeg == "pos") {
-        newTile.innerHTML = "+x";
-      } else {
-        newTile.innerHTML = "-x";
-      }
+      posOrNeg == "pos"
+        ? (newTile.innerHTML = "+x")
+        : (newTile.innerHTML = "-x");
     }
   } else if (unitOrVars == "unit") {
     newTile.className = `unit ${posOrNeg} ${classList}`;
     newTile.setAttribute("data-type", "unit");
     if (textNoText) {
-      if (posOrNeg == "pos") {
-        newTile.innerHTML = "+1";
-      } else {
-        newTile.innerHTML = "-1";
-      }
+      posOrNeg == "pos"
+        ? (newTile.innerHTML = "+1")
+        : (newTile.innerHTML = "-1");
     }
   }
   if (onBalance) {
@@ -218,6 +225,9 @@ function createTile(
 }
 
 // Counting tiles in containers
+/**
+ * @param {string} parentContainer The HTML id attribute of parent container
+ */
 function countElements(parentContainer) {
   var parentContainer = document.getElementById(parentContainer);
   var positive = parentContainer.getElementsByClassName("pos").length;
@@ -231,13 +241,11 @@ function equationText() {
     if (countElements(`${lhsORrhs}${UnitOrVar}Container`) == 0) {
       document.getElementById(`${lhsORrhs}${UnitOrVar}Count`).innerHTML = "";
     } else {
-      if (UnitOrVar == "Unit") {
-        document.getElementById(`${lhsORrhs}${UnitOrVar}Count`).innerHTML =
-          countElements(`${lhsORrhs}${UnitOrVar}Container`);
-      } else {
-        document.getElementById(`${lhsORrhs}${UnitOrVar}Count`).innerHTML =
-          countElements(`${lhsORrhs}${UnitOrVar}Container`) + "x";
-      }
+      UnitOrVar == "Unit"
+        ? (document.getElementById(`${lhsORrhs}${UnitOrVar}Count`).innerHTML =
+            countElements(`${lhsORrhs}${UnitOrVar}Container`))
+        : (document.getElementById(`${lhsORrhs}${UnitOrVar}Count`).innerHTML =
+            countElements(`${lhsORrhs}${UnitOrVar}Container`) + "x");
     }
   }
   digitText("lhs", "Unit");
@@ -363,35 +371,27 @@ function setTiles() {
     rhsVarRandom = Math.floor(Math.random() * 8) - 4;
   }
   for (let i = 0; i < Math.abs(lhsUnitRandom); i++) {
-    if (lhsUnitRandom > 0) {
-      createTile("unit", "pos", lhsUnitContainer, false, true);
-    } else {
-      createTile("unit", "neg", lhsUnitContainer, false, true);
-    }
+    lhsUnitRandom > 0
+      ? createTile("unit", "pos", lhsUnitContainer, false, true)
+      : createTile("unit", "neg", lhsUnitContainer, false, true);
   }
 
   for (let i = 0; i < Math.abs(lhsVarRandom); i++) {
-    if (lhsVarRandom > 0) {
-      createTile("vars", "pos", lhsVarContainer, false, true);
-    } else {
-      createTile("vars", "neg", lhsVarContainer, false, true);
-    }
+    lhsVarRandom > 0
+      ? createTile("vars", "pos", lhsVarContainer, false, true)
+      : createTile("vars", "neg", lhsVarContainer, false, true);
   }
 
   for (let i = 0; i < Math.abs(rhsUnitRandom); i++) {
-    if (rhsUnitRandom > 0) {
-      createTile("unit", "pos", rhsUnitContainer, false, true);
-    } else {
-      createTile("unit", "neg", rhsUnitContainer, false, true);
-    }
+    rhsUnitRandom > 0
+      ? createTile("unit", "pos", rhsUnitContainer, false, true)
+      : createTile("unit", "neg", rhsUnitContainer, false, true);
   }
 
   for (let i = 0; i < Math.abs(rhsVarRandom); i++) {
-    if (rhsVarRandom > 0) {
-      createTile("vars", "pos", rhsVarContainer, false, true);
-    } else {
-      createTile("vars", "neg", rhsVarContainer, false, true);
-    }
+    rhsVarRandom > 0
+      ? createTile("vars", "pos", rhsVarContainer, false, true)
+      : createTile("vars", "neg", rhsVarContainer, false, true);
   }
 }
 
@@ -452,7 +452,6 @@ function startGame() {
   verifySolution();
 }
 
-// Start game with initial functions
 startGame();
 
 // Restart button functionality
@@ -575,117 +574,6 @@ function radioButtonActive(radioButtonClassName) {
       }
     },
   });
-
-  //   document.addEventListener(
-  //     "dragstart",
-  //     function (e) {
-  //       item = e.target;
-  //       e.dataTransfer.setData("text", "");
-  //       playAudio("click.wav");
-  //     },
-  //     false
-  //   );
-
-  //   document.addEventListener(
-  //     "dragover",
-  //     function (e) {
-  //       if (item) {
-  //         e.preventDefault();
-
-  //         // Add the dotted line to indicate dropzone
-
-  //         if (item.classList[0] == "unit") {
-  //           rhsUnitContainer.classList.add("drag-over");
-  //           lhsUnitContainer.classList.add("drag-over");
-  //         }
-
-  //         if (item.classList[0] == "vars") {
-  //           rhsVarContainer.classList.add("drag-over");
-  //           lhsVarContainer.classList.add("drag-over");
-  //         }
-  //       }
-  //     },
-  //     false
-  //   );
-
-  //   //drop event to allow the element to be dropped into valid targets
-  //   document.addEventListener(
-  //     "drop",
-  //     function (e) {
-  //       if (
-  //         (e.target.getAttribute("data-draggable") == "target" &&
-  //           e.target.getAttribute("data-type") == item.classList[0]) ||
-  //         item.getAttribute("onBalance") == "true" ||
-  //         e.target.getAttribute("onBalance") == "true" ||
-  //         e.target.getAttribute("data-draggable") != "target"
-  //       ) {
-  //         if (
-  //           e.target.getAttribute("data-type") == "garbage" ||
-  //           e.target.getAttribute("data-draggable") != "target"
-  //         ) {
-  //           item.remove();
-  //           playAudio("trash.mp3");
-  //           // Remove dotted lines on drop boxes
-  //           let dragOverBoxes = document.querySelectorAll(".drag-over");
-  //           for (let i = 0; i < dragOverBoxes.length; i++) {
-  //             dragOverBoxes[i].classList.remove("drag-over");
-  //           }
-  //           setTimeout(checkMatch, 800);
-  //           setTimeout(checkSolvedEquation, 800);
-  //         }
-  //         if (
-  //           e.target.getAttribute("data-draggable") == "target" &&
-  //           e.target.getAttribute("data-type") == item.classList[0]
-  //         ) {
-  //           e.target.insertBefore(item, e.target.firstChild);
-
-  //           playAudio("drop.wav");
-  //         } else if (e.target.getAttribute("onBalance") == "true") {
-  //           e.target.parentElement.insertBefore(
-  //             item,
-  //             e.target.parentElement.firstChild
-  //           );
-
-  //           playAudio("drop.wav");
-  //         }
-
-  //         item.innerHTML = "";
-  //         item.setAttribute("onBalance", "true");
-  //         e.preventDefault();
-  //         balance();
-  //         equationText();
-
-  //         if (posTileContainerUnit.children.length == 0) {
-  //           createTile("unit", "pos", posTileContainerUnit, true, false);
-  //         }
-  //         if (posTileContainerVar.children.length == 0) {
-  //           createTile("vars", "pos", posTileContainerVar, true, false);
-  //         }
-  //         if (negTileContainerUnit.children.length == 0) {
-  //           createTile("unit", "neg", negTileContainerUnit, true, false);
-  //         }
-  //         if (negTileContainerVar.children.length == 0) {
-  //           createTile("vars", "neg", negTileContainerVar, true, false);
-  //         }
-  //       }
-  //     },
-  //     false
-  //   );
-
-  //   document.addEventListener(
-  //     "dragend",
-  //     function (e) {
-  //       item = null;
-
-  //       // Remove dotted lines on drop boxes
-  //       let dragOverBoxes = document.querySelectorAll(".drag-over");
-  //       for (let i = 0; i < dragOverBoxes.length; i++) {
-  //         dragOverBoxes[i].classList.remove("drag-over");
-  //       }
-  //     },
-  //     false
-  //   );
-  //
 })();
 
 // You Win Modal Set-Up
@@ -700,50 +588,26 @@ function verifySolution() {
   changeTextByName("variable", variable);
   changeTextByName("totals", ``);
   changeTextByName("totals", `${lhsUnit + lhsVar * variable}`);
-  if (variable > 0) {
-    varSign = "pos";
-  } else {
-    varSign = "neg";
-  }
+  variable > 0 ? (varSign = "pos") : (varSign = "neg");
   for (let i = 0; i < Math.abs(variable); i++) {
     createTile("unit", varSign, rhsAnswerContainer, true, false);
   }
-
-  if (lhsUnit > 0) {
-    lhsUnitSign = "pos";
-  } else {
-    lhsUnitSign = "neg";
-  }
+  lhsUnit > 0 ? (lhsUnitSign = "pos") : (lhsUnitSign = "neg");
   for (let i = 0; i < Math.abs(lhsUnit); i++) {
     createTile("unit", lhsUnitSign, lhsUnitContainerAnswer, true, false);
   }
-  console.log(lhsUnit);
-  console.log(lhsUnitSign);
-
-  if (lhsVar > 0) {
-    lhsVarSign = "pos";
-  } else {
-    lhsVarSign = "neg";
-  }
+  lhsVar > 0 ? (lhsVarSign = "pos") : (lhsVarSign = "neg");
   for (let i = 0; i < Math.abs(lhsVar); i++) {
     createTile("vars", lhsVarSign, lhsVarContainerAnswer, true, false);
     lhsVarContainerAnswer.children[i].innerHTML = `x = ${variable}`;
   }
 
-  if (rhsUnit > 0) {
-    rhsUnitSign = "pos";
-  } else {
-    rhsUnitSign = "neg";
-  }
+  rhsUnit > 0 ? (rhsUnitSign = "pos") : (rhsUnitSign = "neg");
   for (let i = 0; i < Math.abs(rhsUnit); i++) {
     createTile("unit", rhsUnitSign, rhsUnitContainerAnswer, true, false);
   }
 
-  if (rhsVar > 0) {
-    rhsVarSign = "pos";
-  } else {
-    rhsVarSign = "neg";
-  }
+  rhsVar > 0 ? (rhsVarSign = "pos") : (rhsVarSign = "neg");
   for (let i = 0; i < Math.abs(rhsVar); i++) {
     createTile("vars", rhsVarSign, rhsVarContainerAnswer, true, false);
   }
